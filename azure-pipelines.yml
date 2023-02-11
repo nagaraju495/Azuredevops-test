@@ -1,0 +1,39 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# specific branch build with batching
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - dev
+    - qa
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: '/'
+    app_build_command: 'npm run build'
+    output_location: 'build'
+    skip_api_build: true
+    verbose: true
+    build_timeout_in_minutes: 20
+    azure_static_web_apps_api_token: '1d26bce3c1cc7f1f9074d5e156da117e2dbdf29ca29e7f1ef0e2ec1ef45e17cd1-1a9f4686-f0c9-4d1e-9f17-0883f3f6596c010129491'
+    production_branch: 'master'
+  env:
+    REACT_APP_API_URL: "https://api.konamars.com"
+    REACT_APP_ENV: "prod"
